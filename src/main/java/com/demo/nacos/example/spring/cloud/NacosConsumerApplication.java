@@ -1,5 +1,6 @@
-package com.demo.nacos.example.spring.cloud;
+package com.demo;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
+@MapperScan(basePackages = "com.demo.mapper")
 public class NacosConsumerApplication {
 
     @LoadBalanced
@@ -27,19 +29,5 @@ public class NacosConsumerApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(NacosConsumerApplication.class, args);
-    }
-
-    @RestController
-    public class TestController {
-
-        private final RestTemplate restTemplate;
-
-        @Autowired
-        public TestController(RestTemplate restTemplate) {this.restTemplate = restTemplate;}
-
-        @RequestMapping(value = "/echo/{str}", method = RequestMethod.GET)
-        public String echo(@PathVariable String str) {
-            return restTemplate.getForObject("http://service-provider/echo/" + str, String.class);
-        }
     }
 }
